@@ -47,7 +47,7 @@ class Interpolator:
         # Convert predictions to RGB frames
         for pred in preds:
             frame = (padder.unpad(pred).detach().cpu().numpy().transpose(1, 2, 0) * 255.0).astype(np.uint8)[:, :, ::-1]
-            yield frame
+            yield cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
 # Example usage
 if __name__ == "__main__":
