@@ -72,7 +72,7 @@ class MultiScaleFlow(nn.Module):
         if (af is None) or (mf is None):
             af, mf = self.feature_bone(img0, img1)
         for i in range(self.flow_num_stage):
-            t = torch.full(mf[-1-i][:B].shape, timestep, dtype=torch.float).cuda()
+            t = torch.full(mf[-1-i][:B].shape, timestep, dtype=torch.float).cuda() if torch.cuda.is_available() else torch.full(mf[-1-i][:B].shape, timestep, dtype=torch.float)
             if flow != None:
                 warped_img0 = warp(img0, flow[:, :2])
                 warped_img1 = warp(img1, flow[:, 2:4])
@@ -118,7 +118,7 @@ class MultiScaleFlow(nn.Module):
         # appearence_features & motion_features
         af, mf = self.feature_bone(img0, img1)
         for i in range(self.flow_num_stage):
-            t = torch.full(mf[-1-i][:B].shape, timestep, dtype=torch.float).cuda()
+            t = torch.full(mf[-1-i][:B].shape, timestep, dtype=torch.float).cuda() if torch.cuda.is_available() else torch.full(mf[-1-i][:B].shape, timestep, dtype=torch.float)
             if flow != None:
                 flow_d, mask_d = self.block[i]( torch.cat([t*mf[-1-i][:B], (1-timestep)*mf[-1-i][B:],af[-1-i][:B],af[-1-i][B:]],1), 
                                                 torch.cat((img0, img1, warped_img0, warped_img1, mask), 1), flow)
