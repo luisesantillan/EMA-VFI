@@ -35,7 +35,7 @@ def batch_interpolate(input_folder, output_folder, n_frames=1):
                 pbar.update(1)
             
             # Get and write interpolated frames immediately
-            for frame in interpolator.interpolate_frames_generator(img1_path, img2_path, n_frames):
+            for frame in interpolator.interpolate_frames(img1_path, img2_path, n_frames):
                 output_path = os.path.join(output_folder, f'frame_{frame_count:04d}.png')
                 cv2.imwrite(output_path, frame)
                 frame_count += 1
