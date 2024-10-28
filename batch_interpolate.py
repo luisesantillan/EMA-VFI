@@ -3,6 +3,13 @@ sys.path.append('.')
 from interpolate import Interpolator
 import cv2
 from natsort import natsorted
+import argparse
+
+parser = argparse.ArgumentParser(description='Interpolate frames')
+parser.add_argument('--input_folder', type=str, required=True)
+parser.add_argument('--output_folder', type=str, required=True)
+parser.add_argument('--n', type=int, default=1)
+args = parser.parse_args()
 
 def batch_interpolate(input_folder, output_folder, n_frames=1):
     # Create output folder if it doesn't exist
@@ -46,9 +53,9 @@ def batch_interpolate(input_folder, output_folder, n_frames=1):
     return len(all_frames)
 
 if __name__ == "__main__":
-    input_folder = "example"
-    output_folder = "outputs"
-    n_frames = 1  # Change this number if you want more interpolated frames between each pair
+    input_folder = args.input_folder
+    output_folder = args.output_folder
+    n_frames = args.n
     
     total_frames = batch_interpolate(input_folder, output_folder, n_frames)
     print(f"Processing complete! Generated {total_frames} total frames in {output_folder}")
