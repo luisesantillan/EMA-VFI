@@ -28,9 +28,6 @@ class Interpolator:
             image1_path: Path to first image
             image2_path: Path to second image
             n_frames: Number of frames to generate between the input images
-            
-        Returns:
-            list: List of interpolated frames in RGB format
         """
         I0 = cv2.imread(image1_path)
         I2 = cv2.imread(image2_path)
@@ -48,12 +45,9 @@ class Interpolator:
         preds = self.model.multi_inference(I0_, I2_, TTA=False, time_list=time_steps, fast_TTA=False)
         
         # Convert predictions to RGB frames
-        frames = []
         for pred in preds:
             frame = (padder.unpad(pred).detach().cpu().numpy().transpose(1, 2, 0) * 255.0).astype(np.uint8)[:, :, ::-1]
-            frames.append(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-            
-        return frames
+            yield frame
 
 # Example usage
 if __name__ == "__main__":
