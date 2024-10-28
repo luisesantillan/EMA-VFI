@@ -35,8 +35,8 @@ class Interpolator:
         I0 = cv2.imread(image1_path)
         I2 = cv2.imread(image2_path)
 
-        I0_ = (torch.tensor(I0.transpose(2, 0, 1)).cpu() / 255.).unsqueeze(0) if torch.cuda.is_available() else (torch.tensor(I0.transpose(2, 0, 1)).cuda() / 255.).unsqueeze(0)
-        I2_ = (torch.tensor(I2.transpose(2, 0, 1)).cpu() / 255.).unsqueeze(0) if torch.cuda.is_available() else (torch.tensor(I2.transpose(2, 0, 1)).cuda() / 255.).unsqueeze(0)
+        I0_ = (torch.tensor(I0.transpose(2, 0, 1)).cuda() / 255.).unsqueeze(0) if torch.cuda.is_available() else (torch.tensor(I0.transpose(2, 0, 1)).cpu() / 255.).unsqueeze(0)
+        I2_ = (torch.tensor(I2.transpose(2, 0, 1)).cuda() / 255.).unsqueeze(0) if torch.cuda.is_available() else (torch.tensor(I2.transpose(2, 0, 1)).cpu() / 255.).unsqueeze(0)
 
         padder = InputPadder(I0_.shape, divisor=32)
         I0_, I2_ = padder.pad(I0_, I2_)
