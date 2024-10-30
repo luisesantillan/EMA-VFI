@@ -29,7 +29,7 @@ class Model:
         self.net.eval()
 
     def device(self):
-        self.net.to(torch.device("cuda"))
+        self.net.to(torch.device("cuda")) if torch.cuda.is_available() else self.net.to(torch.device("cpu"))
 
     def load_model(self, name=None, rank=0):
         def convert(param):
@@ -41,7 +41,7 @@ class Model:
         if rank <= 0 :
             if name is None:
                 name = self.name
-            self.net.load_state_dict(convert(torch.load(f'ckpt/{name}.pkl')))
+            self.net.load_state_dict(convert(torch.load(f'ckpt/{name}.pkl'))) if torch.cuda.is_available() else self.net.load_state_dict(convert(torch.load(f'ckpt/{name}.pkl', map_location=torch.device('cpu'))))
     
     def save_model(self, rank=0):
         if rank == 0:
