@@ -8,9 +8,9 @@ from tqdm import tqdm
 
 parser = argparse.ArgumentParser(description='Interpolate frames')
 
-input = parser.add_mutually_exclusive_group(required=True)
-input.add_argument('--input_video', type=str, required=False, help='Path to input video file')
-input.add_argument('--input_folder', type=str, required=False, help='Path to input frames folder')
+input_source = parser.add_mutually_exclusive_group(required=True)
+input_source.add_argument('--input_video', type=str, required=False, help='Path to input video file')
+input_source.add_argument('--input_folder', type=str, required=False, help='Path to input frames folder')
 output = parser.add_mutually_exclusive_group(required=True)
 output.add_argument('--output_folder', type=str, required=False, help='Path to output frames folder')
 output.add_argument('--output_video', type=str, required=False, help='Path to output video file')
@@ -22,7 +22,7 @@ def batch_interpolate(input_folder, output_folder, n_frames=1, input_video=None,
     if input_video is not None:
         temp_folder = "temp_frames"
         if os.path.exists(temp_folder):
-            erase = input("The folder temp_frames already exists. Do you want to erase it? (y/n): ")
+            erase = 'y'
             if erase == 'y':
                 os.system(f"rm -rf {temp_folder}")
             else:
@@ -32,7 +32,7 @@ def batch_interpolate(input_folder, output_folder, n_frames=1, input_video=None,
         import subprocess
         subprocess.run([
             'python', 'video_to_folder.py',
-            '--video', input,
+            '--video', input_video,
             '--folder', temp_folder
         ])
         input_folder = temp_folder
@@ -40,7 +40,7 @@ def batch_interpolate(input_folder, output_folder, n_frames=1, input_video=None,
     if output_video is not None:
         output_folder = "temp_interpolated_frames"
         if os.path.exists(output_folder):
-            erase = input("The folder temp_interpolated_frames already exists. Do you want to erase it? (y/n): ")
+            erase = 'y'
             if erase == 'y':
                 os.system(f"rm -rf {output_folder}")
             else:
