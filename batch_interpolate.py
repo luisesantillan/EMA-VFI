@@ -15,6 +15,7 @@ output = parser.add_mutually_exclusive_group(required=True)
 output.add_argument('--output_folder', type=str, required=False, help='Path to output frames folder')
 output.add_argument('--output_video', type=str, required=False, help='Path to output video file')
 parser.add_argument('--n', type=int, default=1)
+parser.add_argument('--fps',type=int,default=30)
 
 args = parser.parse_args()
 
@@ -86,7 +87,8 @@ def batch_interpolate(input_folder, output_folder, n_frames=1, input_video=None,
         subprocess.run([
             'python', 'folder_to_video.py',
             '--folder', output_folder,
-            '--video', output_video
+            '--video', output_video,
+            '--fps', str(args.fps)
         ])
 
     return frame_count
